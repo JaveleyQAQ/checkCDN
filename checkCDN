@@ -1,0 +1,118 @@
+#!/bin/bash
+
+reset='\033[0m'
+green='\033[0;32m'
+red='\033[0;31m'
+magenta='\033[0;35m'
+hotface='\xF0\x9F\xA5\xB5'
+simeface='\xF0\x9F\x98\x80'
+cryface=$'\xF0\x9F\x98\xAD'
+clownface=$'\xF0\x9F\xA4\xA1'
+
+cdn_provider(){
+    # 获取一行的主域名做cdn提供商
+    local head_line=$(echo "$1" | grep -oEv  '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+    local domain=$(echo "$head_line"  |  awk -F '.' '{print $(NF-2)"."$(NF-1)"."$NF}')
+    local provider_filename="./cdn_provider/${domain}.txt"
+    echo "$1"  >> "$provider_filename"
+    sort -u -r $provider_filename -o $provider_filename
+    # 创建文本文件只将host写入
+    #echo "$1" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' >> "./cdn_provider/$filename"
+}
+
+
+check_cdn() {
+    mkdir -p ./cdn_provider
+
+    local args=$1
+    local input=$2
+
+    if [ "$args" = "-u" ]; then
+        # 单个主机
+        local dnsx_results=$(echo "$input" | dnsx -silent -a -ro -t 100 )
+        local host_count=$(echo "$dnsx_results" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -r -u | wc -w)
+        local host_list=$(echo "$dnsx_results" |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -r -u )
+
+        if [ $host_count -ge 3 ]; then
+            echo -e "${hotface} ${red}[-] ${magenta}[${input}]${reset}${red} The A record of the domainis served by a CDN provider.${reset}"
+            echo "$host_list" 
+        else
+            echo -e "${simeface} ${green}[+] ${magenta}[${input}]${reset}${green} The domain seems not to be served by a CDN.${reset}"
+            echo "$host_list" 
+
+        fi
+        exit 0
+    elif [ "$args" = "-file" ]; then
+        # 文件列表
+        local cdn_domains=""
+        local non_cdn_domains=""
+        local only_cdn_host_list="./cdn_provider/only_cdn_host_list.txt"
+        local dns_resolver=""
+
+        while IFS= read -r host; do
+            local dnsx_results=$(echo "$host" | dnsx -silent -a -cname -ro -t 200)
+            local host_count=$(echo "$dnsx_results" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -r -u | wc -w)
+            local host_list=$(echo "$dnsx_results" |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -r -u )
+            local cname_list=$(echo "$dnsx_results" |  grep -oEv  '[0-9]+\.[0-9]+ \.[0-9]+\.[0-9]+' | sort -r -u)
+
+            if [ $host_count -ge 3 ]; then
+            
+                
+                echo "$host_list"  >> $only_cdn_host_list
+                echo "$host"  >> is_cdn_domains.txt
+                cdn_provider "$dnsx_results"
+
+                cdn_domains+="\n- ${magenta}$host${reset}"
+                echo -e "${hotface} ${red}[-] ${magenta}[${host}]${reset}${red} The A record of the domain  is served by a CDN provider.${reset}" 
+                # The IP addresses have been appended to the cdnList.txt file.${reset}"
+
+            else
+                echo "$host"  >> is_real_domains.txt
+                echo "$host_list" | sort -u >> is_real_host_list.txt
+                non_cdn_domains+="\n- ${magenta}$host${reset}"
+
+                echo -e "${simeface} ${green}[+] ${magenta}[${host}]${reset}${green} The domain seems not to be served by a CDN.${reset}"
+                #the address has been appended to the file named real_ipaddresses.txt.${reset}"
+            fi
+        done < "$filename"
+        
+        echo ""
+        echo -e "${clownface}${red} CDN Domains:${reset}${cdn_domains}"
+        echo ""
+        echo -e "${simeface}${green} Non-CDN Domains:${reset}${non_cdn_domains}"
+
+    else
+        echo "Invalid input type. Please use -u for a single host or -file for a file list." >&2
+        exit 1
+    fi
+
+
+    #取重
+    if test -e is_real_domains.txt; then
+        sort -u -r is_real_host_list.txt -o is_real_host_list.txt
+        sort -u -r is_real_domains.txt -o is_real_domains.txt
+    elif test -e $only_cdn_host_list; then
+        sort -u -r $only_cdn_host_list -o $only_cdn_host_list
+        sort -u -r is_cdn_domains.txt -o is_cdn_domains.txt
+    fi
+}
+
+
+# 处理参数
+if [ "$1" = "-u" ]; then
+    check_cdn "$1" "$2"
+elif [ "$1" = "-file" ]; then
+    filename="$2"
+    if [ ! -f "$filename" ]; then
+    echo "$filename 文件不存在"
+    exit 0
+    fi
+    # 去重操作
+    temp_file=$(mktemp)
+    sort -u -r "$filename" > "$temp_file"
+    mv "$temp_file" "$filename"
+    check_cdn "$1" "$2"
+else
+    echo "Invalid input type. Please use -u for a single host or -file for a file list." >&2
+    exit 1
+fi

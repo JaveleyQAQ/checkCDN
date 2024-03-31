@@ -1,0 +1,31 @@
+name:   💥 dnsx - DNS Resolver
+on: 
+ [push]
+    # schedule:
+    #   - cron: '0 0 * * *'
+    # workflow_dispatch:
+
+jobs:
+  dnsx-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create hosts.txt
+        run: |
+            [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+            # wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
+            git clone https://github.com/JaveleyQAQ/checkCDN
+            cd checkCDN 
+            chmod +x checkCDN
+            ./checkCDN -file baidu.com.domain
+            # [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+            
+            
+      # - name: 💥 dnsx - DNS Resolver
+      #   uses: projectdiscovery/dnsx-action@main
+      #   with:
+      #     list: hosts.txt
+          
+      - uses: actions/upload-artifact@v4
+        with:
+            name: cdn_provider
+            path: ${{ github.workspace }}/cdn_provider/*

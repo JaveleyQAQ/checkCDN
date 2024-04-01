@@ -17,7 +17,7 @@ jobs:
         run: | 
           export GOPATH="/home/runner/go"
           export GOBIN="$GOPATH/bin"
-          export PATH=$GITHUB_PATH:$GOBIN
+          export PATH=$PATH:$GOBIN
           go env
       # - name: 💥 dnsx - DNS Resolver
       #   uses: projectdiscovery/dnsx-action@main

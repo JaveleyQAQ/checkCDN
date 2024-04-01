@@ -38,8 +38,10 @@ jobs:
         run: |
          [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
          echo "/home/runner/go/bin/" >> $GITHUB_PATH
-         find / -name dnsx
+         echo "/home/runner/go/bin/" >> $PATH
+         # find / -name dnsx
          
+         /home/runner/go/bin/dnsx -h
          dnsx -h
         shell: bash
           

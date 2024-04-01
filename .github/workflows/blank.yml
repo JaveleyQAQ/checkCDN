@@ -17,7 +17,7 @@ jobs:
         run: | 
           export GOPATH="/home/runner/go"
           export GOBIN="$GOPATH/bin"
-          export PATH=$PATH:$GOBIN
+          export PATH=$GITHUB_PATH:$GOBIN
           go env
       # - name: 💥 dnsx - DNS Resolver
       #   uses: projectdiscovery/dnsx-action@main
@@ -38,7 +38,7 @@ jobs:
         run: |
          [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
          echo "/home/runner/go/bin/" >> $GITHUB_PATH
-         echo "/home/runner/go/bin/" >> $PATH
+         #echo "/home/runner/go/bin/" >> $PATH
          # find / -name dnsx
          
          /home/runner/go/bin/dnsx -h

@@ -14,14 +14,19 @@ jobs:
         with:
           go-version: 1.17
       - name: check GO ENV
-        run: |
+        run: ｜
          go env 
+         go clean 
+         
+      - name: 💥 dnsx - DNS Resolver
+        uses: projectdiscovery/dnsx-action@main
+        with:
+          list: hosts.txt
 
-      
-      # - name: 💥 dnsx - DNS Resolver
-      #   uses: projectdiscovery/dnsx-action@main
-      #   with:
-      #     list: hosts.txt
+      - name: check GO ENV
+        run: ｜    
+            which dnsx 
+            
       # - uses: actions/upload-artifact@v4
       #   with:
       #       name: cdn_provider

@@ -8,13 +8,13 @@ jobs:
   dnsx-scan:
     runs-on: ubuntu-latest
     steps:
-      - name: create hosts.txt
-        run: |
-            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
-            #cat hosts.txt
-            mkdir -p ${{ github.workspace }}/artifact/dnsx.log
-            git clone https://github.com/JaveleyQAQ/checkCDN.git
-            cd checkCDN
+      # - name: create hosts.txt
+      #   run: |
+      #       wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
+      #       #cat hosts.txt
+      #       mkdir -p ${{ github.workspace }}/artifact/dnsx.log
+      #       git clone https://github.com/JaveleyQAQ/checkCDN.git
+      #       cd checkCDN
             
       - name: 💥 dnsx - DNS Resolver
         uses: projectdiscovery/dnsx-action@main

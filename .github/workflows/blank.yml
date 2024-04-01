@@ -24,10 +24,10 @@ jobs:
 
       - name: check GO ENV2
         run: ｜    
-            which go
-            go env 
-            pwd 
-            ls  -la ~/go
+            which go;
+            go env ;
+            pwd;
+            ls  -la ~/go;
          
             
       # - uses: actions/upload-artifact@v4

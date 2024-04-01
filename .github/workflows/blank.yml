@@ -1,8 +1,8 @@
-name:   💥 dnsx - DNS Resolver
-on: 
- [push]
+name: 💥 dnsx - DNS Resolver
+
+on: [push]
     # schedule:
-    #   - cron: '0 0 * * *'
+      # - cron: '0 0 * * *'
     # workflow_dispatch:
 
 jobs:
@@ -10,53 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set GOPATH
-        run: |
-          echo "##[set-env name=GOPATH;]$(dirname $GITHUB_WORKSPACE)"
-          echo "##[add-path]$(dirname $GITHUB_WORKSPACE)/bin"
-        shell: bash
-      # - uses: actions/setup-go@v3
-      #   with:
-      #     go-version: 1.17
-      # - name: check GO ENV1
-      #   run: | 
-      #     echo  "export GOPATH=/home/runner/go" >> ~/.bash_profile
-      #     echo  "export GOBIN=$GOPATH/bin" >> ~/.bash_profile
-      #     echo  "export PATH=$PATH:$GOBIN" >> ~/.bash_profile
-      #     source ~/.bash_profile
-      #     cat  ~/.bash_profile
-      #     go env
-      #     echo $SHELL
-      # - name: 💥 dnsx - DNS Resolver
-      #   uses: projectdiscovery/dnsx-action@main
-      #   with:
-          # list: hosts.txt
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.17
 
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
-      #     # curl www.google.com
-      #     go env
-      #     pwd
-      #     ls ~
-          # ls /home/runner/
-          
-      - name: demo
-        run: |
-         [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
-         echo "/home/runner/go/bin/" >> $GITHUB_PATH
-         #source 
-         #echo "/home/runner/go/bin/" >> $PATH
-         # find / -name dnsx
+      - name: 💥 dnsx - DNS Resolver
+        uses: projectdiscovery/dnsx-action@main
+        with:
+          list: hosts.txt
+
+      - name: test
+        run: 
+            dnsx -h 
          
-         /home/runner/go/bin/dnsx -h
-         dnsx -h
-        shell: bash
-          
-         
-            
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #       name: cdn_provider
-      #       path: ${{ github.workspace }}/cdn_provider/*
+
+      # - name: GitHub Workflow artifacts
+        # uses: actions/upload-artifact@v2
+        # with:
+          # name: dnsx.log
+          # path: dnsx.log

@@ -35,7 +35,9 @@ jobs:
       - name: demo
         run: |
          [ ! -x /home/runner/go/bin/dnsx ] && go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
-      
+         echo "/home/runner/go/bin/" >> $GITHUB_PATH
+         dnsx -h
+        shell: bash
           
          
             

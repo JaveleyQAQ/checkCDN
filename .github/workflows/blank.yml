@@ -15,10 +15,11 @@ jobs:
       #     go-version: 1.17
       - name: check GO ENV1
         run: | 
-          echo >> "export GOPATH=/home/runner/go"
-          echo >> "export GOBIN=$GOPATH/bin"
-          echo >> "export PATH=$PATH:$GOBIN"
+          echo  "export GOPATH=/home/runner/go" >> ~/.bash_profile
+          echo  "export GOBIN=$GOPATH/bin" >> ~/.bash_profile
+          echo  "export PATH=$PATH:$GOBIN" >> ~/.bash_profile
           source ~/.bash_profile
+          cat  ~/.bash_profile
           go env
           echo $SHELL
       # - name: 💥 dnsx - DNS Resolver

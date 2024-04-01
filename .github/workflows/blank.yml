@@ -15,8 +15,9 @@ jobs:
           go-version: 1.17
       - name: check GO ENV
         run: ｜
-         go env 
-         go clean 
+         go env
+         
+         go clean -cache
          
       - name: 💥 dnsx - DNS Resolver
         uses: projectdiscovery/dnsx-action@main

@@ -9,10 +9,10 @@ jobs:
   dnsx-scan:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
-      # - uses: actions/setup-go@v3
-      #   with:
-      #     go-version: 1.17
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.17
       # - name: check GO ENV1
       #   run: ｜
       #    go env

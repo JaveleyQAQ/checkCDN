@@ -22,12 +22,15 @@ jobs:
       #   with:
           # list: hosts.txt
 
-      - name: check GO ENV2
-        run: ｜    
-            which go;
-            go env ;
-            pwd;
-            ls  -la ~/go;
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+          curl www.google.com
+          go env
+          pwd
+          ls ~/go
+          
          
             
       # - uses: actions/upload-artifact@v4

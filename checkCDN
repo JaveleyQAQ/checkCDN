@@ -11,7 +11,8 @@ clownface=$'\xF0\x9F\xA4\xA1'
 
 cdn_provider(){
     # 获取一行的主域名做cdn提供商
-    local head_line=$(echo "$1" | grep -oEv  '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+    local head_line=$(echo "$1" | sed "/^$/d" | grep -vE  '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 )
+    #echo $head_line
     local domain=$(echo "$head_line"  |  awk -F '.' '{print $(NF-2)"."$(NF-1)"."$NF}')
     local provider_filename="./cdn_provider/${domain}.txt"
     echo "$1"  >> "$provider_filename"
@@ -58,17 +59,17 @@ check_cdn() {
             if [ $host_count -ge 3 ]; then
             
                 
-                echo "$host_list"  >> $only_cdn_host_list
-                echo "$host"  >> is_cdn_domains.txt
-                cdn_provider "$dnsx_results"
+                echo "$host_list"|sed "/^$/d"  >> $only_cdn_host_list
+                echo "$host"|sed "/^$/d" >> is_cdn_domains.txt
+                cdn_provider "$dnsx_results" 
 
                 cdn_domains+="\n- ${magenta}$host${reset}"
                 echo -e "${hotface} ${red}[-] ${magenta}[${host}]${reset}${red} The A record of the domain  is served by a CDN provider.${reset}" 
                 # The IP addresses have been appended to the cdnList.txt file.${reset}"
 
             else
-                echo "$host"  >> is_real_domains.txt
-                echo "$host_list" | sort -u >> is_real_host_list.txt
+                echo "$host"| sed "/^$/d"  >> is_real_domains.txt
+                echo "$host_list"| sed "/^$/d" | sort -u >> is_real_host_list.txt
                 non_cdn_domains+="\n- ${magenta}$host${reset}"
 
                 echo -e "${simeface} ${green}[+] ${magenta}[${host}]${reset}${green} The domain seems not to be served by a CDN.${reset}"

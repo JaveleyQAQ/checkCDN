@@ -17,8 +17,6 @@ jobs:
         run: ｜
          go env
          
-         go clean
-         
       - name: 💥 dnsx - DNS Resolver
         uses: projectdiscovery/dnsx-action@main
         with:

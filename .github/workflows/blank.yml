@@ -1,31 +1,35 @@
-name: 💥 dnsx - DNS Resolver
-
+name: test💥 dnsx - DNS Resolver
 on: [push]
     # schedule:
-      # - cron: '0 0 * * *'
+    #   - cron: '0 0 * * *'
     # workflow_dispatch:
 
 jobs:
   dnsx-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.17
-
+      - name: create hosts.txt
+        run: |
+            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
+            #cat hosts.txt
+            mkdir -p ${{ github.workspace }}/artifact/dnsx.log
+            git clone https://github.com/JaveleyQAQ/checkCDN.git
+            cd checkCDN
+            
       - name: 💥 dnsx - DNS Resolver
         uses: projectdiscovery/dnsx-action@main
         with:
           list: hosts.txt
-
-      - name: test
-        run: 
-            dnsx -h 
-         
-
-      # - name: GitHub Workflow artifacts
-        # uses: actions/upload-artifact@v2
-        # with:
-          # name: dnsx.log
-          # path: dnsx.log
+      - name: create hosts.txt
+        run: |
+            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
+            mkdir -p ${{ github.workspace }}/artifact/dnsx.log
+            git clone https://github.com/JaveleyQAQ/checkCDN.git
+            cd checkCDN
+            chmod +x checkCDN
+            bash checkCDN -file  baidu.com.domain
+            
+      - uses: actions/upload-artifact@v4
+        with:
+            name: dnsx.log
+            path: ${{ github.workspace }}/dnsx.log

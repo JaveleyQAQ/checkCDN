@@ -10,27 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.17
-      # - name: check GO ENV1
-      #   run: ｜
-      #    go env
+      # - uses: actions/setup-go@v3
+      #   with:
+      #     go-version: 1.17
+      - name: check GO ENV1
+        run: ｜
+         export GOPATH='/Users/javeley/go'
+         export GOBIN="$GOPATH/bin"
+         export PATH=$PATH:$GOBIN
+         go env
          
       # - name: 💥 dnsx - DNS Resolver
       #   uses: projectdiscovery/dnsx-action@main
       #   with:
           # list: hosts.txt
 
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          # curl www.google.com
-          go env
-          pwd
-          ls ~
-          ls /home/runner/
+      # - name: Run a multi-line script
+      #   run: |
+      #     echo Add other actions to build,
+      #     echo test, and deploy your project.
+      #     # curl www.google.com
+      #     go env
+      #     pwd
+      #     ls ~
+      #     ls /home/runner/
           
       - name: demo
         run: |

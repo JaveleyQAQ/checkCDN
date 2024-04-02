@@ -17,7 +17,8 @@ jobs:
       - name: checkCDN
         run: |
             
-            git clone https://github.com/JaveleyQAQ/checkCDN.git && cd checkCDN
+            git clone https://github.com/JaveleyQAQ/checkCDN.git
+            cd checkCDN
             # setting your domain list
             wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain -o domains.txt
             chmod +x checkCDN

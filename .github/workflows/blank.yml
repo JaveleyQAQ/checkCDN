@@ -1,15 +1,11 @@
 name: checkCDN 💥
-on: 
-    # [push]
-    # schedule:
-    #   - cron: '0 0 * * *'
+on:  
     workflow_dispatch:
-    
         inputs:
-            url-list:
-            description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
-            required: true
-            default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
+           url-list:
+           description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
+           required: true
+           default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
             
 
 jobs:

@@ -1,4 +1,4 @@
-name: test💥 dnsx - DNS Resolver
+name: checkCDN 💥
 on: 
     # [push]
     # schedule:
@@ -14,19 +14,18 @@ jobs:
         uses: projectdiscovery/dnsx-action@main
         with:
           list: hosts.txt
-      - name: create hosts.txt
+      - name: checkCDN
         run: |
-            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain
-            mkdir -p ${{ github.workspace }}/artifact/dnsx.log
+            # setting your domain list
+            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain -o domains.txt
             git clone https://github.com/JaveleyQAQ/checkCDN.git
             cd checkCDN
             chmod +x checkCDN
-
-            bash checkCDN -file  baidu.com.domain.2
+            bash checkCDN -file  domains.txt
             
       - uses: actions/upload-artifact@v4
         with:
-            name: dnsx.log
+            name: checkCDN.log
             path: ${{ github.workspace }}/checkCDN/**/*
             
             #path: ${{ github.workspace }}/checkCDN/cdn_provider/**/*

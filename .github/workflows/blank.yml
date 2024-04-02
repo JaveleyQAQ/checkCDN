@@ -4,25 +4,34 @@ on:
     # schedule:
     #   - cron: '0 0 * * *'
     workflow_dispatch:
+    
+        inputs:
+            url-list:
+            description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
+            required: true
+            default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
+            
 
 jobs:
   dnsx-scan:
     runs-on: ubuntu-latest
+    
     steps:
-            
       - name: 💥 dnsx - DNS Resolver
         uses: projectdiscovery/dnsx-action@main
         with:
           list: hosts.txt
+          
       - name: checkCDN
         run: |
             
             git clone https://github.com/JaveleyQAQ/checkCDN.git
             cd checkCDN
             # setting your domain list
-            wget https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain -O domains.txt
+            wget ${{ inputs.url-list }}  -O domains.txt
+            cat domains.txt
             chmod +x checkCDN
-            bash checkCDN -file  domains.txt
+            #bash checkCDN -file  domains.txt
             
       - uses: actions/upload-artifact@v4
         with:

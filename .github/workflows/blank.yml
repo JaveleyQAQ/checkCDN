@@ -1,11 +1,4 @@
 name: checkCDN 💥
-# on:  
-#     workflow_dispatch:
-#         inputs:
-#            url-list:
-#            description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
-#            required: true
-#            default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
 on:
   workflow_dispatch:
     inputs:
@@ -29,7 +22,7 @@ jobs:
             git clone https://github.com/JaveleyQAQ/checkCDN.git
             cd checkCDN
             # setting your domain list
-            wget ${{ inputs.url-list }}  -O domains.txt
+            wget ${{ inputs.urlList }}  -O domains.txt
             cat domains.txt
             chmod +x checkCDN
             #bash checkCDN -file  domains.txt

@@ -1,13 +1,18 @@
 name: checkCDN 💥
-on:  
-    workflow_dispatch:
-        inputs:
-           url-list:
-           description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
-           required: true
-           default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
-            
-
+# on:  
+#     workflow_dispatch:
+#         inputs:
+#            url-list:
+#            description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
+#            required: true
+#            default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
+on:
+  workflow_dispatch:
+    inputs:
+      urlList:
+        description: "List of hosts to perform DNS resolution example: https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2 "
+        required: true
+        default: "https://raw.githubusercontent.com/JaveleyQAQ/checkCDN/main/baidu.com.domain.2"
 jobs:
   dnsx-scan:
     runs-on: ubuntu-latest
